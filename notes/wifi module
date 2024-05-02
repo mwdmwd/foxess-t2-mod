@@ -1,0 +1,65 @@
+Connector pinout:
+1: +7-12V (red wire inside)
+2: GND (yellow!)
+3: RS485 A (white)
+4: RS485 B (black)
+
+Almost everything is done by the STM32:
+- driving the LEDs
+- driving the RS485 transceiver
+- serving the web UI and WebSocket endpoint (the ESP8266 runs AT command firmware)
+   - maybe the same STM32 firmware is reused across the whole range of WiFi/cellular/Ethernet data loggers (it has code to support them)
+
+STM32 USARTs:
+- 1:
+- 2: RS485 transceiver
+- 3: TX is debug messages (on P2 header), RX is "RS485 simulator" input?
+- 4:
+- 5: AT command module (ESP8266)
+- 6:
+
+STM32 GPIOs:
+PA0 -> 
+PA1 -> green LED (low=on)
+PA2 (USART2 TX) -> RS485
+PA3 (USART2 RX) -> RS485
+PA4 ->
+PA5 ->
+PA6 ->
+PA7 ->
+PA8 ->
+PA9 ->
+PA10 -> 
+PA11 -> 
+PA12 -> RS485 transmit enable (high=enable)
+PA13 -> SWDIO
+PA14 -> SWCLK
+PA15 -> ESP8266 reset (high=reset)
+
+PB0 -> 
+PB1 -> 
+PB2 -> 
+PB3 (USART5 TX) -> ESP8266 GPIO13
+PB4 (USART5 RX) -> ESP8266 GPIO15
+PB5 -> 
+PB6 -> 
+PB7 -> 
+PB8 -> 
+PB9 -> 
+PB10 ->
+PB11 -> 
+PB12 -> 
+PB13 -> 
+PB14 -> 
+PB15 -> 
+
+PC13 -> 
+PC14 -> 
+PC15 -> 
+
+PF0 -> 
+PF1 -> 
+
+
+Master firmware slot starts at 0x08004000
+Backup firmware slot starts at 0x0802A000

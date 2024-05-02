@@ -1,0 +1,34 @@
+Inverter MCUs
+	Master: TMS320F28335PGFA (on vertical daughterboard)
+	Slave: STM32F030C8T6 (on vertical daughterboard)
+	Manager: GD32F305RCT6
+
+Manager USART1 <-9600N81-> meter port RS485 (export_tx)
+Manager USART3 <-9600N81-> slave USART1 ("inter comm")
+Manager UART4  <-9600N81-> data logger port RS485 port									(*) can sometimes run at 115200 but not when transmitting normal data, seems to be during upgrades
+
+Manager GPIOA 0x10 (output) -> SPI flash chip CS (over SPI1)
+Manager GPIOA 0x4 (output) -> red "!" LED
+Manager GPIOA 0x2 (output) -> green "play" LED
+Manager GPIOB 0x8000 (output) -> LCD shift register data
+Manager GPIOB 0x4000 (output) -> 
+Manager GPIOB 0x2000 (output) -> LCD shift register clock, LCD RS
+Manager GPIOB 0x1000 (output) -> LCD shift register latch
+Manager GPIOB 0x80 (output) -> data logger port RS485 transmit enable (active high)
+Manager GPIOB 0x40 (output) -> meter port RS485 transmit enable (active high)
+Manager GPIOB 0x20 (output) -> LCD?
+Manager GPIOB 0x2 (output) -> LCD enable
+Manager GPIOC 0x200 (input) <- inverter is T2, high=T2 low=T
+Manager GPIOC 0x100 (input) <- LCD connection method high bit, only checked on T2
+Manager GPIOC 0x80 (input)  <- LCD connection method low bit, only checked on T2
+Manager GPIOC 0x10 (output) -> 
+
+LCD connection methods:
+0 - 0x80/0xc0 sent for line 1/2
+1 - 0x80/0x90 sent for line 1/2
+2 - 0x80/0xc0 sent for line 1/2, different way of sending the bits?
+3 - ?
+
+WiFi data logger
+	STM32F030CCT6: logic
+	ESP8266: standard AT firmware
