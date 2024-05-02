@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+firmware="${1:?firmware?}"
+patch="${2:?patch?}"
+
+xxd "$firmware" > "$firmware.xxd"
+cleanup() {
+	rm "$firmware.xxd"
+}
+trap cleanup EXIT
+
+patch "$firmware.xxd" "$patch" -r -
+
+xxd -r "$firmware.xxd" > "$firmware"

@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+bin="$1"
+hex="${1%bin}hex"
+
+objcopy -I binary -O ihex --change-addresses 0x08005000 "$bin" "$hex"
