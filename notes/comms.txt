@@ -29,6 +29,8 @@ LCD connection methods:
 2 - 0x80/0xc0 sent for line 1/2, different way of sending the bits?
 3 - ?
 
+Slave SPI2 <-> Master
+
 WiFi data logger
 	STM32F030CCT6: logic
 	ESP8266: standard AT firmware

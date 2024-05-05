@@ -1,0 +1,22 @@
+#!/usr/bin/env python3
+from struct import Struct
+from sys import argv
+
+Chunk = Struct(">I128BH")
+
+assert argv[1].endswith(".bin")
+with open(argv[1], "rb") as f:
+	data = f.read()
+
+prev = None
+out = open(argv[1].replace(".bin", ".raw.bin"), "wb")
+for chunk in Chunk.iter_unpack(data):
+	addr, *data, checksum = chunk
+	print(hex(addr))
+	if prev is not None and prev != addr:
+		print(f"!! seek {addr - prev:#x} bytes")
+		out.write(b"\0" * (addr - prev))
+	for i in range(0, len(data), 2):
+		data[i], data[i + 1] = data[i + 1], data[i]
+	out.write(bytes(data))
+	prev = addr + len(data) // 2  # word addressing
