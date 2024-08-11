@@ -1,0 +1,16 @@
+#!/usr/bin/env python3
+from struct import Struct
+from sys import argv
+
+CountryDefaults = Struct("<150H")
+
+assert argv[1].endswith(".raw.bin")
+with open(argv[1], "rb") as f:
+	data = f.read()
+
+countries = "0=AS4777_AU, 1=AS4777_NZ, 2=G98_1, 3=G99_1, 4=Netherlands, 5=CEI_021, 6=VDE0126, 7=ARN4105, 8=Brasil_220, 9=Brasil_240, 10=IEC61727, 11=Philippines, 12=NRS097_2_1, 13=Vietnam, 14=Poland, 15=Portugal, 16=PPDS, 17=UNE_206, 18=RD1699, 19=Belgium, 20=VFR2014, 21=UTE_C15_712_1, 22=Singapore, 23=Indonesia, 24=Malaysia, 25=Cambodia, 26=PEA, 27=MEA, 28=SriLanka, 29=Pakistan, 30=Ireland, 31=Denmark, 32=Slovakia, 33=Austria, 34=Switzerland, 35=Slovenia, 36=Hungary, 37=Serbia, 38=Croatia, 39=Turkey, 40=Cyprus, 41=Bulgaria, 42=Romania, 43=Greece, 44=Latvia, 45=Lithuania, 46=Estonia, 47=Sweden, 48=Norway, 49=Finland, 50=Argentina, 51=Chile, 51=Japan, 52=Mexico, 53=USA, 54=Canada, 55=China, 57=China-1, 58=Local, 59=SaudiArabia".split(",")
+countries = list(map(str.strip, countries))
+
+# 3.35
+for i, chunk in enumerate(CountryDefaults.iter_unpack(data[0x15e0e : 0x15e0e + 300 * 60])):
+	print(countries[i], chunk[6] / 10, chunk[:20])
